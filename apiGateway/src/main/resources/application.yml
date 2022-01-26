@@ -1,0 +1,27 @@
+server:
+  port: 8020
+
+# routing or discovery feature
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery.locator:
+        enabled: true  # automatic routing
+        lower-case-service-id: true # to make service names in lowercase
+        # manual routing
+      routes[0]:
+        id: employeeService
+        uri: lb://employeeservice
+        predicates[0]: Path=/api/v1/employees/**
+        predicates[1]: Method=GET,POST,PUT,DELETE,OPTIONS,TRACE
+      routes[1]:
+        id: carservice
+        uri: lb://carservice
+        predicates[0]: Path=/api/v1/cars/**
+        predicates[1]: Method=GET,POST,PUT,DELETE,OPTIONS,TRACE
+
+eureka:
+  client:
+    serviceUrl.defaultZone: http://localhost:8010/eureka

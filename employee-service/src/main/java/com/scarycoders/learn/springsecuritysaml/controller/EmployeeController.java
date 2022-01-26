@@ -3,13 +3,15 @@ package com.scarycoders.learn.springsecuritysaml.controller;
 import com.scarycoders.learn.springsecuritysaml.model.Employee;
 import com.scarycoders.learn.springsecuritysaml.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,8 +21,22 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @Autowired
+    private Environment env;
+
+    @Autowired
+    RestTemplate restTemplate;
+
+    @Value("${api-gateway.deployed}")
+    private String apiGateWay;
+    @Autowired
     private EmployeeController(EmployeeService employeeService){
         this.employeeService=employeeService;
+    }
+
+    @GetMapping()
+    public ResponseEntity<String> sayHi(){
+
+        return ResponseEntity.ok().body("Hello employee service on port= "+env.getProperty("local.server.port"));
     }
     @GetMapping(value= "/all",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Employee>> getAllEmployees(@RequestParam("pageNo") int pageNumber
@@ -34,6 +50,13 @@ public class EmployeeController {
     public ResponseEntity<Employee> getById(@PathVariable("id") Integer id){
         Employee byId = employeeService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(byId);
+    }
+
+    @GetMapping(path = "/employee/cars",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getCars(){
+        String forObject = restTemplate.getForObject(apiGateWay+"/api/v1/cars/all", String.class);
+
+        return ResponseEntity.ok(forObject);
     }
 
 }

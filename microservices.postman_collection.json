@@ -1,0 +1,112 @@
+{
+	"variables": [],
+	"info": {
+		"name": "microservices",
+		"_postman_id": "a6417d77-146f-c8e5-e36e-b2bb0ae2cdae",
+		"description": "learning microservice ",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8020/CARSERVICE/profile/cars",
+			"request": {
+				"url": "http://localhost:8020/carservice/api/v1/cars",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8020/EMPLOYEESERVICE/api/v1/employees/all?pageNo=2&pageSize=5",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8020/employeeservice/api/v1/employees/all?pageNo=2&pageSize=6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8020",
+					"path": [
+						"employeeservice",
+						"api",
+						"v1",
+						"employees",
+						"all"
+					],
+					"query": [
+						{
+							"key": "pageNo",
+							"value": "2",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "pageSize",
+							"value": "6",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8020/employeeservice/api/v1/employees",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8020/api/v1/employees/all?pageNo=2&pageSize=6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8020",
+					"path": [
+						"api",
+						"v1",
+						"employees",
+						"all"
+					],
+					"query": [
+						{
+							"key": "pageNo",
+							"value": "2",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "pageSize",
+							"value": "6",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "employee micor service with default get route"
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8020/api/v1/cars",
+			"request": {
+				"url": "http://localhost:8020/api/v1/cars",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
