@@ -2,6 +2,9 @@ package com.scarycoders.learn.springsecuritysaml.controller;
 
 import com.scarycoders.learn.springsecuritysaml.model.Employee;
 import com.scarycoders.learn.springsecuritysaml.services.EmployeeService;
+import com.scarycoders.learn.springsecuritysaml.services.client.CarClient;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -14,6 +17,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("api/v1/employees")
 public class EmployeeController {
@@ -25,6 +29,9 @@ public class EmployeeController {
 
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    CarClient carClient;
 
     @Value("${api-gateway.deployed}")
     private String apiGateWay;
@@ -52,11 +59,18 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.OK).body(byId);
     }
 
-    @GetMapping(path = "/employee/cars",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/employee/rest-template/cars",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> getCars(){
+        log.info("Inside get cas by rest template");
         String forObject = restTemplate.getForObject(apiGateWay+"/api/v1/cars/all", String.class);
 
         return ResponseEntity.ok(forObject);
+    }
+
+    @GetMapping(path = "/employee/feign/cars",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getCarsByFeinClient(){
+        log.info("Inside get cars by open fein client");
+        return ResponseEntity.ok(carClient.getAllCars());
     }
 
 }

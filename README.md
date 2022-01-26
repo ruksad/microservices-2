@@ -20,3 +20,5 @@ shows example of spring-data-jpa
 4. pagination
 5. Fly-way
 6. Eureka client
+7. Open feign client for car service    feign client declarative rest client it takes service name from discovery client and path to the api mapping, it does client side load balancing
+8. Resilience4j circuit breaker
