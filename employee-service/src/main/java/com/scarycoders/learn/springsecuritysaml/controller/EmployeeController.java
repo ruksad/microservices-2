@@ -3,7 +3,7 @@ package com.scarycoders.learn.springsecuritysaml.controller;
 import com.scarycoders.learn.springsecuritysaml.model.Employee;
 import com.scarycoders.learn.springsecuritysaml.services.EmployeeService;
 import com.scarycoders.learn.springsecuritysaml.services.client.CarClient;
-import lombok.extern.log4j.Log4j;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,21 +23,20 @@ import java.util.List;
 public class EmployeeController {
 
     private final EmployeeService employeeService;
-
-    @Autowired
-    private Environment env;
-
-    @Autowired
-    RestTemplate restTemplate;
-
-    @Autowired
-    CarClient carClient;
+    private final Environment env;
+    private final RestTemplate restTemplate;
+    private final CarClient carClient;
 
     @Value("${api-gateway.deployed}")
     private String apiGateWay;
+
     @Autowired
-    private EmployeeController(EmployeeService employeeService){
+    public EmployeeController(EmployeeService employeeService,
+                               Environment environment,RestTemplate restTemplate,CarClient carClient){
         this.employeeService=employeeService;
+        this.env=environment;
+        this.restTemplate=restTemplate;
+        this.carClient=carClient;
     }
 
     @GetMapping()
@@ -68,9 +67,15 @@ public class EmployeeController {
     }
 
     @GetMapping(path = "/employee/feign/cars",produces = MediaType.APPLICATION_JSON_VALUE)
+    @CircuitBreaker(name = "carservice", fallbackMethod = "getCarsByFeinFallBack")
     public ResponseEntity<String> getCarsByFeinClient(){
         log.info("Inside get cars by open fein client");
         return ResponseEntity.ok(carClient.getAllCars());
+    }
+
+    public ResponseEntity<String> getCarsByFeinFallBack(Exception e){
+        log.info("Inside fall back --------");
+        return ResponseEntity.ok("Service is down please try later = "+ e.getMessage());
     }
 
 }
