@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: spring-cloud-config-user-props
+  config:
+    import: optional:configserver:http://localhost:8030 # if spring cloud config server not working then use default values from here
+  profile: dev
+
+server:
+  port: 8030 # if port not specified in program arguments then use random port
+
+#eureka:
+#  client:
+#    serviceUrl.defaultZone: http://localhost:8010/eureka
+#  instance:
+#    instance-id: ${spring.application.name}:${spring.application.instance-id:${random.value}}
+
+  spring-cloud-config-user-props.property.one: 170
+  spring-cloud-config-user-props.property.two: 180
+  spring-cloud-config-user-props.property.three: 190

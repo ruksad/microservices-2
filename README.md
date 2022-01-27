@@ -22,3 +22,7 @@ shows example of spring-data-jpa
 6. Eureka client
 7. Open feign client for car service    feign client declarative rest client it takes service name from discovery client and path to the api mapping, it does client side load balancing
 8. Resilience4j circuit breaker
+
+
+#spring cloud config server
+It is client server architecture where config server will read props from git or mysql or some db and 

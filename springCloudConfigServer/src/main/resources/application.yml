@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: spring-cloud-config-server
+  cloud:
+    config:
+      server:
+        git.uri: file:///home/siddiqui/Documents/learn/microservices-2-props
+server:
+  port: 8040
+
+
+#eureka:
+#  client:
+#    serviceUrl.defaultZone: http://localhost:8010/eureka
+#  instance:
+#    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+
+management:
+  security:
+    enabled: false
