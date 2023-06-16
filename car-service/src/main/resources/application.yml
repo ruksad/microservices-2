@@ -16,6 +16,9 @@ spring:
 
 server.port: ${PORT:0}
 
+#Actuator
+management.endpoints.jmx.exposure.include: health,info,env,beans
+management.endpoints.web.exposure.include: health,info,env,beans
 
 eureka:
   client:
